@@ -9,6 +9,8 @@ Hijack Scanner discovered, and also have the ability to scan specific applicatio
 since the tool already scans all files, I added in the functionality to identify executable scripts
 that may allow backdooring, as well as listing any interesting files for analysis. 
 
+The backbone of this tool is based off of scan.py from [DylibHijack](https://github.com/synack/DylibHijack) by Patrick Wardle (@synack).  
+
 #### Usage:
 ```Python
 boko.py [-h] (-r | -i | -p /path/to/app) (-A | -P | -b) [-oS outputfile | -oC outputfile | -oA outputfile] [-s] [-v]
