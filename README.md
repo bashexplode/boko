@@ -30,14 +30,14 @@ boko.py [-h] (-r | -i | -p /path/to/app) (-A | -P | -b) [-oS outputfile | -oC ou
 | -s, --sipdisabled   | Use if SIP is disabled on the system to search typically read-only paths|
 | -v, --verbose       | Output all results in verbose mode while script runs |
 
-It is recommended only to use active mode with the -p flag and selecting a specific program.
+It is recommended only to use active mode with the -p flag and selecting a specific program. 
 
 It is highly discouraged to run this tool with the -i and (-A or -b) flags together. This will open every executable on your system for 3 seconds at a time. I do not take any responsibility for your system crashing or slowing down because you ran that. Additionally, if you have dormant malware on your system, this will execute it. 
 
 #### Requirements:
 
 * Python 3  
-* Everything in the requirements.txt file
+* `python -m pip install psutil`
 
 #### Process Flow:
 
