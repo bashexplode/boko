@@ -15,6 +15,8 @@ Hijack Scanner discovered. The original scanner also seems to stop once it disco
 
 The backbone of this tool is based off of scan.py from [DylibHijack](https://github.com/synack/DylibHijack) by Patrick Wardle (@synack).  
 
+[Check out the Wiki for more information on how to use boko and how to use it as a class for your own purposes.](https://github.com/bashexplode/boko/wiki)
+
 #### Usage:
 ```Python
 boko.py [-h] (-r | -i | -p /path/to/app) (-A | -P | -b) [-oS outputfile | -oC outputfile | -oA outputfile] [-s] [-v]
