@@ -37,8 +37,9 @@ boko.py [-h] (-r | -i | -p /path/to/app) (-A | -P | -b) [-oS outputfile | -oC ou
 | -s, --sipdisabled   | Use if SIP is disabled on the system to search typically read-only paths|
 | -v, --verbose       | Output all results in verbose mode while script runs, without this only Definite certainty vulnerabilities are displayed to the console |
 
-It is recommended **only** to use active mode (`-A`) with the `-p` flag and selecting a specific program. Also, it's a good idea to use `-v` with `-oS` or `-oA`, unless you are only looking for definite certainty vulnerabilities.
+It is recommended **only** to use active mode (`-A`) with the `-p` flag and selecting a specific program. Also, it's a good idea to use `-v` with `-oS` or `-oA`, unless you are only looking for definite certainty vulnerabilities.  
 
+**Warning Note:**
 It is highly discouraged to run this tool with the `-i` and (`-A` or -`b`) flags together. This combination will open every executable on your system for 3 seconds at a time. I do not take any responsibility for your system crashing or slowing down because you ran that. Additionally, if you have dormant malware on your system, this will execute it. I also recommend not scanning the whole `/Applications` directory if you have Xcode installed because it takes a very long time.   
 
 #### Requirements:
@@ -53,14 +54,14 @@ It is highly discouraged to run this tool with the `-i` and (`-A` or -`b`) flags
 ###### Running:
 * Identify all running processes on system
 * Obtain full path of running executable
-* Open executables and identify macho headers
+* Read executables and identify macho headers
 * Identify dylib relative paths that are loaded and check if files exist in that location
 * Output hijackable dylibs and weak dylibs for running applications
 
 ###### Installed/Application:
 * Scan full directory of application for all files
 * Identify executable files, scripts, and other interesting files in application directory
-* Open executables and identify macho headers or if the file is a script
+* Read executables and identify macho headers or if the file is a script
 * Identify dylib relative paths that are loaded and check if files exist in that location
 * Output hijackable dylibs, weak dylibs, backdoorable scripts, and interesting files (verbose only)
 
@@ -69,15 +70,15 @@ It is highly discouraged to run this tool with the `-i` and (`-A` or -`b`) flags
 ###### Running:
 * Identify all running processes on system
 * Obtain full path of running executable
-* Open executables and identify macho headers
-* Execute the executables for 3 seconds and analyze rpaths that are attempted to load
+* Read executables and identify macho headers
+* Execute the executable binaries for 3 seconds and analyze rpaths that are attempted to load
 * Output hijackable dylibs and weak dylibs for running applications
 
 ###### Application:
 * Scan full directory of application for all files
 * Identify executable files, scripts, and other interesting files in application directory
-* Open executables and identify macho headers or if the file is a script
-* Execute the executables for 3 seconds and analyze rpaths that are attempted to load
+* Read executables and identify macho headers or if the file is a script
+* Execute the executable binaries for 3 seconds and analyze rpaths that are attempted to load
 * Output hijackable dylibs, weak dylibs, backdoorable scripts, and interesting files (verbose only)
 
 
