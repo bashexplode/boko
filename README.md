@@ -1,5 +1,5 @@
 # boko Application Hijack Scanner for macOS ![This is boko](https://github.com/bashexplode/boko/blob/master/boko.png) 
-boko.py is a application scanner for macOS that searches for and identifies potential dylib hijacking and 
+boko.py is an application scanner for macOS that searches for and identifies potential dylib hijacking and 
 weak dylib vulnerabilities for application executables, as well as scripts an application may use that 
 have the potential to be backdoored. The tool also calls out interesting files and lists them instead of manually 
 browsing the file system for analysis. With the active discovery function, there's no more guess work if an executable is vulnerable to dylib hijacking!  
@@ -37,9 +37,9 @@ boko.py [-h] (-r | -i | -p /path/to/app) (-A | -P | -b) [-oS outputfile | -oC ou
 | -s, --sipdisabled   | Use if SIP is disabled on the system to search typically read-only paths|
 | -v, --verbose       | Output all results in verbose mode while script runs, without this only Definite certainty vulnerabilities are displayed to the console |
 
-It is recommended only to use active mode with the -p flag and selecting a specific program. Also, it's a good idea to use -v with -oS or -oA, unless you are only looking for definite certainty vulnerabilities.
+It is recommended **only** to use active mode (`-A`) with the `-p` flag and selecting a specific program. Also, it's a good idea to use `-v` with `-oS` or `-oA`, unless you are only looking for definite certainty vulnerabilities.
 
-It is highly discouraged to run this tool with the -i and (-A or -b) flags together. This will open every executable on your system for 3 seconds at a time. I do not take any responsibility for your system crashing or slowing down because you ran that. Additionally, if you have dormant malware on your system, this will execute it. 
+It is highly discouraged to run this tool with the `-i` and (`-A` or -`b`) flags together. This combination will open every executable on your system for 3 seconds at a time. I do not take any responsibility for your system crashing or slowing down because you ran that. Additionally, if you have dormant malware on your system, this will execute it. I also recommend not scanning the whole `/Applications` directory if you have Xcode installed because it takes a very long time.   
 
 #### Requirements:
 
@@ -70,14 +70,14 @@ It is highly discouraged to run this tool with the -i and (-A or -b) flags toget
 * Identify all running processes on system
 * Obtain full path of running executable
 * Open executables and identify macho headers
-* Execute the executables and analyze rpaths that are attempted to load
+* Execute the executables for 3 seconds and analyze rpaths that are attempted to load
 * Output hijackable dylibs and weak dylibs for running applications
 
 ###### Application:
 * Scan full directory of application for all files
 * Identify executable files, scripts, and other interesting files in application directory
 * Open executables and identify macho headers or if the file is a script
-* Execute the executables and analyze rpaths that are attempted to load
+* Execute the executables for 3 seconds and analyze rpaths that are attempted to load
 * Output hijackable dylibs, weak dylibs, backdoorable scripts, and interesting files (verbose only)
 
 
