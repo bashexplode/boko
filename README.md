@@ -1,15 +1,11 @@
 # boko Application Hijack Scanner for macOS
 boko.py is a static application scanner for macOS that searches for and identifies potential dylib hijacking and 
-weak dylib vulnerabilities for application executables, as well as identifies scripts an application may use that 
-have the potential to be backdoored. It also calls out interesting files and lists them instead of manually 
+weak dylib vulnerabilities for application executables, as well as scripts an application may use that 
+have the potential to be backdoored. The tool also calls out interesting files and lists them instead of manually 
 browsing the file system for analysis.  
 
 The reason behind creating this tool was because I wanted more control over the data Dylib
-Hijack Scanner discovered, and also have the ability to scan specific applications. Along the way
-since the tool already scans all files, I added in the functionality to identify executable scripts
-that may allow backdooring, as well as listing any interesting files for analysis. 
-
-The original scanner also seems to stop once it discovers the first case of a vulnerable Dylib without expanding the rest of the rpaths. Since sometimes the first result is expanded in a non-existent file within a SIP-protected area, I wanted to get the rest of those expanded paths. Because of this, there are false positives, so the tool assigns a certainty field for each item.  
+Hijack Scanner discovered. The original scanner also seems to stop once it discovers the first case of a vulnerable Dylib without expanding the rest of the rpaths. Since sometimes the first result is expanded in a non-existent file within a SIP-protected area, I wanted to get the rest of those expanded paths. Because of this, there are false positives, so the tool assigns a certainty field for each item.  
 | **Certainty**            |  **Description** |
 |--------------------:|:-----------------------------------|
 | Definite        | The vulnerability is 100% exploitable  |
