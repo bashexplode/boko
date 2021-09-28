@@ -114,8 +114,9 @@ class ExecutableScanner:
                                     '/usr/libexec',
                                     '/usr/sbin',
                                     '/usr/share',
-                                    '/usr/standalone']
-        self.uninterestingexts = ['.aiff', '.dub', '.dylib', '.filters', '.frag', '.gif', 
+                                    '/usr/standalone',
+                                    '/Library/Developer/CommandLineTools/SDKs/']
+        self.uninterestingexts = ['.3pm', '.3', '.3tcl', '.3x', '.3g', '.aiff', '.dll', '.doc', '.dub', '.dylib', '.filters', '.frag', '.gif', '.html', 
                                   '.icns', '.idm', '.iqy', '.lab', '.lex', '.manifest', '.meta', '.metainfo', 
                                   '.mp4', '.nls', '.node', '.nrr', '.odf', '.olb', '.plist', '.png', '.ppd', '.ppt', '.pst', '.qml',
                                   '.qmltypes', '.qrc', '.svg', '.tib', '.tiff', '.tlb', '.transition', '.ttc', '.ttf', '.typ',
@@ -270,7 +271,7 @@ class ExecutableScanner:
         for proc in psutil.process_iter(['pid', 'name', 'username', 'exe']):
             if proc.info["exe"] is not None and not proc.info["exe"].startswith(tuple(self.readonly)):
                 if proc.info["name"] not in self.results.keys():
-                    self.initializeDictionaryItem(proc.info["name"], proc.info["exe"], True)
+                    self.initializeDictionaryItem(str(proc.info["name"]).strip(), str(proc.info["exe"]).strip(), True)
                     if self.verbose:
                         print("[+] Found: %s" % proc.info["exe"])
         if self.verbose:
@@ -295,9 +296,10 @@ class ExecutableScanner:
 
                 if '.app' in fullName:
                     indices = [i for i, x in enumerate(rootDirectory.split('/')) if ".app" in x]
-                    appname = '.'.join(rootDirectory.split('/')[indices[-1]].split('.')[:-1])
-                    if appname not in applications:
-                        applications.append(appname)
+                    if len(indices) > 0:
+                        appname = '.'.join(rootDirectory.split('/')[indices[-1]].split('.')[:-1])
+                        if appname not in applications:
+                            applications.append(appname)
 
                 for filecheck in self.results.keys():
                     try:
@@ -341,6 +343,7 @@ class ExecutableScanner:
 
     def resolvePath(self, binaryPath, unresolvedPath):
         resolvedPath = unresolvedPath
+        unresolvedPath = str(unresolvedPath)
 
         if self.results[binaryPath]['filetype'] == self.MH_EXECUTE:
             # resolve '@loader_path'
@@ -617,6 +620,7 @@ class ExecutableScanner:
                     # check all @rpath'd imports for the executable
                     # ->if there is one that isn't found in a primary LC_RPATH, the executable is vulnerable :)
                     for importedDylib in self.results[binarypath]['load']['LC_LOAD_DYLIBs']:
+                        importedDylib = str(importedDylib)
                         # skip non-@rpath'd imports
                         if not importedDylib.startswith('@rpath'):
                             continue
@@ -631,6 +635,7 @@ class ExecutableScanner:
                 # can check all binary types...
                 # check binary
                 for weakDylib in self.results[binarypath]['load']['LC_LOAD_WEAK_DYLIBs']:
+                    weakDylib = str(weakDylib)
                     vulntype = "WeakDylib"
                     # got to resolve weak @rpath'd imports before checking if they exist
                     if weakDylib.startswith('@rpath'):
@@ -648,7 +653,7 @@ class ExecutableScanner:
                     # ->check/save those that don't exist
                     elif not os.path.exists(weakDylib):
                         readonlypartition, contextwriteperm = self.readWriteCheck(weakDylib)
-                        if self.results[binary]['filetype'] == self.MH_EXECUTE:
+                        if self.results[binarypath]['filetype'] == self.MH_EXECUTE:
                             certainty = 'High'
                             indicator = '+'
                             loadorder = 'unknown'
@@ -920,7 +925,10 @@ class CSVout:
         for fullpath in self.results.keys():
             if self.results[fullpath]['parse'] is False:
                 file = self.results[fullpath]['filename']
-                filetype = self.results[fullpath]['filetypeh']
+                if 'filetypeh' in self.results[fullpath].keys():
+                    filetype = self.results[fullpath]['filetypeh']
+                else:
+                    filetype = ""
                 writeperms = self.results[fullpath]['writeable']
                 row = [file, fullpath, filetype, writeperms]
                 self.csvlinewrite(row)
